@@ -2,6 +2,34 @@
   text-align: center;
 }
 
+.font-dosis {
+  font-family: 'Dosis', sans-serif;
+}
+
+.font-nunito {
+  font-family: 'Nunito', sans-serif;
+}
+
+.Header-title {
+  position: absolute;
+  width: 113px;
+  height: 23px;
+  left: 30px;
+  top: 20px;
+
+  font-family: 'Dosis';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+
+  /* identical to box height */
+  letter-spacing: 0.25px;
+  text-transform: uppercase;
+
+  color: #FFFFFF;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -14,12 +42,13 @@
 }
 
 .App-header {
-  background-color: #4D81B7;
   position: absolute;
-}
+  width: 1280px;
+  height: 64px;
+  left: 0px;
+  top: 0px;
 
-.App-link {
-  color: #61dafb;
+  background: #4D81B7;
 }
 
 @keyframes App-logo-spin {
