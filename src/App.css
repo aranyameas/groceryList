@@ -2,6 +2,16 @@
   text-align: center;
 }
 
+.App-header {
+  position: absolute;
+  width: 1280px;
+  height: 64px;
+  left: 0px;
+  top: 0px;
+
+  background: #4D81B7;
+}
+
 .font-dosis {
   font-family: 'Dosis', sans-serif;
 }
@@ -88,32 +98,61 @@
   box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.25);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.List-page {
+  display: flex;
+  /* justify-content:space-around; */
+  align-items: flex-start;
+  margin-top: 111px;
+  /* margin-left: 164px;
+  margin-right: 100px; */
+  height: 100vh;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.List-content {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  margin-left: 164px;
+  margin-right: 91px;
+}
+
+.List-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /* width: inherit; */
+}
+
+.Title {
+  width: 87px;
+  height: 24px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+
+  /* identical to box height, or 133% */
+  text-align: center;
+  letter-spacing: -1.30385e-09px;
+
+  color: #000000;
+}
+
+.Subtitle {
+  width: 146px;
+  height: 20px;
+  left: 60px;
+  top: 47px;
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+
+  /* identical to box height, or 143% */
+  text-align: center;
+  letter-spacing: -1.30385e-09px;
+
+  color: #7D7A7A;
   }
-}
-
-.App-header {
-  position: absolute;
-  width: 1280px;
-  height: 64px;
-  left: 0px;
-  top: 0px;
-
-  background: #4D81B7;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
