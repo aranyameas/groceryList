@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { AppBar, Backdrop, Box, Button, List, ListItem, ListItemIcon, ListItemText, CircularProgress, Checkbox, Slide, Modal, Typography } from "@mui/material";
+import { AppBar, Backdrop, Box, Button, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, CircularProgress, Checkbox, Slide, Modal, Typography } from "@mui/material";
+import CommentIcon from "@mui/icons-material/Comment";
 import { Header } from "./Header";
 import { EmptyList } from "./EmptyList";
-// import { Loading } from "./Loading";
-// import { Add } from "./Add";
+import { Add } from "./Add";
 // import { Edit } from "./Edit";
 // import { Delete } from "./Delete";
 
@@ -26,6 +26,24 @@ export const MainWindow = (props) => {
         "Quantity": 5
     }
 ]);
+    const [addOpen, setAddOpen] = useState(false);
+
+    const handleAddOpen = () => setAddOpen(true);
+
+    const [checked, setChecked] = React.useState([0]);
+
+    const handleToggle = (value) => () => {
+        const currentIndex = checked.indexOf(value);
+        const newChecked = [...checked];
+
+        if (currentIndex === -1) {
+        newChecked.push(value);
+        } else {
+        newChecked.splice(currentIndex, 1);
+        }
+
+        setChecked(newChecked);
+    };
 
     // const addItem = () => {
 
@@ -67,8 +85,39 @@ export const MainWindow = (props) => {
                 <div className="List-content">
                     <div className="List-header">
                         <span className="font-nunito Title">Your Items</span>
-                        <Button variant="contained"><span className="font-nunito Button-text">Add Item</span></Button>
+                        <Button variant="contained" onClick={handleAddOpen}><span className="font-nunito Button-text">Add Item</span></Button>
+                        <Add addOpen={addOpen}/>
                     </div>
+                    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                        {[0, 1, 2, 3].map((value) => {
+                        const labelId = `checkbox-list-label-${value}`;
+
+                        return (
+                        <ListItem
+                            key={value}
+                            secondaryAction={
+                            <IconButton edge="end" aria-label="comments">
+                                <CommentIcon />
+                            </IconButton>
+                            }
+                            disablePadding
+                        >
+                            <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
+                            <ListItemIcon>
+                                <Checkbox
+                                edge="start"
+                                checked={checked.indexOf(value) !== -1}
+                                tabIndex={-1}
+                                disableRipple
+                                inputProps={{ 'aria-labelledby': labelId }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
+                            </ListItemButton>
+                        </ListItem>
+                        );
+                    })}
+                    </List>
                 </div>
             </div>
         </div>
