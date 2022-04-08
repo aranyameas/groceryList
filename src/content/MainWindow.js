@@ -1,22 +1,12 @@
 import React, { useState } from "react";
 import { AppBar, Backdrop, Box, Button, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, CircularProgress, Checkbox, Slide, Modal, Typography } from "@mui/material";
-import CommentIcon from "@mui/icons-material/Comment";
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { Header } from "./Header";
 import { EmptyList } from "./EmptyList";
 import { Add } from "./Add";
 // import { Edit } from "./Edit";
 // import { Delete } from "./Delete";
-
-const style = {
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
 
 export const MainWindow = (props) => {
     const [shoppingList, setShoppingList] = useState([
@@ -45,18 +35,13 @@ export const MainWindow = (props) => {
         setChecked(newChecked);
     };
 
-    // const addItem = () => {
+    const handleEdit = () => {
+        //Edit an item
+    }
 
-    // }
-
-    // const editItem = () => {
-
-    // }
-
-    // const deleteItem = () => {
-
-    // }
-    console.log(shoppingList);
+    const handleDelete = () => {
+        //Delete an item
+    }
 
     if(!shoppingList)
     return(
@@ -85,10 +70,10 @@ export const MainWindow = (props) => {
                 <div className="List-content">
                     <div className="List-header">
                         <span className="font-nunito Title">Your Items</span>
-                        <Button variant="contained" onClick={handleAddOpen}><span className="font-nunito Button-text">Add Item</span></Button>
+                        <Button variant="contained" onClick={handleAddOpen} sx={{backgroundColor:"#1871E8"}}><span className="font-nunito Button-text">Add Item</span></Button>
                         <Add addOpen={addOpen}/>
                     </div>
-                    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                    <List>
                         {[0, 1, 2, 3].map((value) => {
                         const labelId = `checkbox-list-label-${value}`;
 
@@ -96,11 +81,18 @@ export const MainWindow = (props) => {
                         <ListItem
                             key={value}
                             secondaryAction={
-                            <IconButton edge="end" aria-label="comments">
-                                <CommentIcon />
-                            </IconButton>
+                                <div>
+                                     <IconButton edge="end" aria-label="comments" onClick={handleEdit}>
+                                        <CreateOutlinedIcon sx={{color: "#555F7C"}} />
+                                    </IconButton>
+                                    <IconButton edge="end" aria-label="comments" onClick={handleDelete}>
+                                        <DeleteOutlinedIcon sx={{color: "#555F7C"}} />
+                                    </IconButton>
+                                </div>
+                           
                             }
                             disablePadding
+                            sx= {{border: 1, margin: "12px", borderRadius: 1, borderColor: "#D5DFE9"}}
                         >
                             <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
                             <ListItemIcon>
@@ -110,7 +102,8 @@ export const MainWindow = (props) => {
                                 tabIndex={-1}
                                 disableRipple
                                 inputProps={{ 'aria-labelledby': labelId }}
-                                />
+                                sx={{color:"#C6C6C6"}}
+                            />
                             </ListItemIcon>
                             <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
                             </ListItemButton>
