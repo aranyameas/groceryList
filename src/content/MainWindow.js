@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { AppBar, Backdrop, Box, Button, List, ListItem, ListItemIcon, ListItemText, Checkbox, Slide, Modal, Typography } from "@mui/material";
+import { AppBar, Backdrop, Box, Button, List, ListItem, ListItemIcon, ListItemText, CircularProgress, Checkbox, Slide, Modal, Typography } from "@mui/material";
+import { Header } from "./Header";
 import { EmptyList } from "./EmptyList";
 // import { Loading } from "./Loading";
 // import { Add } from "./Add";
@@ -23,7 +24,8 @@ export const MainWindow = (props) => {
         "Item Name": "Tomatoes",
         "Description": "Walmart",
         "Quantity": 5
-    }]);
+    }
+]);
 
     // const addItem = () => {
 
@@ -36,15 +38,31 @@ export const MainWindow = (props) => {
     // const deleteItem = () => {
 
     // }
+    console.log(shoppingList);
+
+    if(!shoppingList)
+    return(
+        <div>
+            <Header />
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '100vh' }}>
+                <CircularProgress />
+            </Box>
+        </div>
+        
+    )
+
+    if(shoppingList.length === 0)
+    return(
+        <div>
+            <Header />
+            <EmptyList />
+        </div>
+        
+    )
 
     return (
         <div>
-            <AppBar className={"App-header"}>
-                <span className={"Header-title font-dosis"}>SHOPPING LIST</span>
-            </AppBar>
-
-            {/* <EmptyList /> */}
-            
+            <Header />
             <div className="List-page">
                 <div className="List-content">
                     <div className="List-header">
