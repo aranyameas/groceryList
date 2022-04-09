@@ -28,7 +28,11 @@ export function Delete(props) {
             Are you sure you want to delete this item? This can not be undone.
           </span>
           <div className="Delete-buttons">
-            <Button variant="text" sx={{ right: "30px" }}>
+            <Button
+              variant="text"
+              sx={{ right: "30px" }}
+              onClick={handleDeleteClose}
+            >
               <span className="Cancel font-nunito">Cancel</span>
             </Button>
             <Button variant="contained" sx={{ right: "30px" }}>
