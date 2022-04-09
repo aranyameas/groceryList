@@ -227,7 +227,7 @@
   color: #5c6269;
 }
 
-.Delete-buttons {
+.Modal-buttons {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
@@ -274,4 +274,51 @@
 .Edit-icon {
   color: #555f7c;
   padding-right: 14px;
+}
+
+.Add-contents {
+  display: flex;
+  flex-direction: column;
+}
+
+.AddEdit-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 21px;
+  background-color: #fafafa;
+}
+
+.AddEdit-shoppinglist-text {
+  font-weight: 600;
+  font-size: 18px;
+  color: #5c6269;
+  margin-left: 30px;
+  letter-spacing: 0.25px;
+}
+
+.AddEdit-subtext {
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: -1.30385e-9px;
+
+  /* Typography/Primary Font */
+  color: #2a323c;
+  margin-left: 30px;
+}
+
+.AddEdit-subsubtext {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+
+  /* identical to box height, or 138% */
+  letter-spacing: -1.30385e-9px;
+
+  /* Typography/Secondary Font */
+  color: #5c6269;
+  margin-left: 30px;
+  margin-top: 5px;
+  margin-bottom: 13px;
 }

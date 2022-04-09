@@ -14,7 +14,6 @@ export function Delete(props) {
     <div>
       <Modal
         open={deleteOpen}
-        onClose={handleDeleteClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         BackdropComponent={Backdrop}
@@ -27,7 +26,7 @@ export function Delete(props) {
           <span className="Delete-text font-nunito">
             Are you sure you want to delete this item? This can not be undone.
           </span>
-          <div className="Delete-buttons">
+          <div className="Modal-buttons">
             <Button
               variant="text"
               sx={{ right: "30px" }}

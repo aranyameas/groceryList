@@ -1,7 +1,21 @@
-import * as React from "react";
-import { Modal, Slide, Box, Backdrop, Typography } from "@mui/material";
+import React, { useState } from "react";
+import {
+  TextField,
+  Button,
+  Modal,
+  Slide,
+  Box,
+  Backdrop,
+  Select,
+  IconButton,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
+import { LastPageOutlined } from "@mui/icons-material";
 
 export const Add = (props) => {
+  const [amount, setAmount] = useState(0);
   const addOpen = props.addOpen;
   const setAddOpen = props.setAddOpen;
   const handleAddClose = () => setAddOpen(false);
@@ -15,7 +29,6 @@ export const Add = (props) => {
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       open={addOpen}
-      onClose={handleAddClose}
       BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 5,
@@ -24,12 +37,37 @@ export const Add = (props) => {
     >
       <Slide direction="left" in={addOpen}>
         <Box className="Modal">
-          <Typography id="transition-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          <div className="Add-contents">
+            <div className="AddEdit-header">
+              <span className="font-dosis AddEdit-shoppinglist-text">
+                SHOPPING LIST
+              </span>
+              <IconButton onClick={handleAddClose}>
+                <LastPageOutlined />
+              </IconButton>
+            </div>
+            <span className="font-nunito AddEdit-subtext">Add an Item</span>
+            <span className="font-nunito AddEdit-subsubtext">
+              Add your new item below
+            </span>
+            <FormControl fullWidth>
+              <TextField label="Item Name" className="Margin-1"></TextField>
+              <TextField label="Description"></TextField>
+              <Select label="How many?" value={amount}>
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
+              </Select>
+              <div className="Modal-buttons">
+                <Button variant="text" onClick={handleAddClose}>
+                  <span className="Cancel font-nunito">Cancel</span>
+                </Button>
+                <Button variant="contained">
+                  <span className="font-nunito">Add Task</span>
+                </Button>
+              </div>
+            </FormControl>
+          </div>
         </Box>
       </Slide>
     </Modal>
