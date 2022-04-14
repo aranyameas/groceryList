@@ -20,7 +20,17 @@ import { Delete } from "./Delete";
 export function MainWindow(props) {
   const [shoppingList, setShoppingList] = useState([
     {
-      "Item Name": "Tomatoes",
+      itemName: "Tomatoes",
+      Description: "Walmart",
+      Quantity: 5,
+    },
+    {
+      itemName: "Tomatoes",
+      Description: "Walmart",
+      Quantity: 5,
+    },
+    {
+      itemName: "Tomatoes",
       Description: "Walmart",
       Quantity: 5,
     },
@@ -84,24 +94,21 @@ export function MainWindow(props) {
             <Add addOpen={addOpen} setAddOpen={setAddOpen} />
           </div>
           <List>
-            {[0, 1, 2, 3].map((value) => {
-              const labelId = `checkbox-list-label-${value}`;
-
+            {shoppingList.map((item, index) => {
               return (
-                <ListItem key={value} disablePadding className="List">
-                  <Button onClick={handleToggle(value)}>
+                <ListItem key={item.itemName} disablePadding className="List">
+                  <Button onClick={handleToggle(item.itemName)}>
                     <Checkbox
                       edge="start"
-                      checked={checked.indexOf(value) !== -1}
+                      checked={checked.indexOf(item.itemName) !== -1}
                       tabIndex={-1}
                       disableRipple
-                      inputProps={{ "aria-labelledby": labelId }}
                       sx={{ color: "#C6C6C6" }}
                     />
                   </Button>
                   <ListItemText
-                    id={labelId}
-                    primary={`Line item ${value + 1}`}
+                    primary={item.itemName}
+                    secondary={item.Description}
                   />
                   <IconButton
                     edge="end"

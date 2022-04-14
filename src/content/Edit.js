@@ -68,14 +68,20 @@ export const Edit = (props) => {
                   Edit your item below
                 </span>
                 <FormControl fullWidth>
-                  <TextField label="Item Name" className="Margin-1"></TextField>
-                  <TextField label="Description"></TextField>
+                  <TextField
+                    label={<span className="font-nunito">Item Name</span>}
+                  ></TextField>
+                  <TextField
+                    label={<span className="font-nunito">Description</span>}
+                  ></TextField>
                   <FormControl fullWidth>
-                    <InputLabel id="Quantity">How Many?</InputLabel>
+                    <InputLabel id="Quantity">
+                      <span className="font-nunito">How Many?</span>
+                    </InputLabel>
                     <Select
                       labelid="Quantity"
                       id="Quantity"
-                      label="How many?"
+                      label={<span className="font-nunito">"How many?"</span>}
                       value={amount}
                     >
                       <MenuItem value={1}>1</MenuItem>
