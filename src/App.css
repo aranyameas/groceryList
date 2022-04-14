@@ -322,3 +322,28 @@
   margin-top: 5px;
   margin-bottom: 13px;
 }
+
+.EditCheck {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.Purchased {
+  width: 76px;
+  height: 22px;
+  left: 60px;
+  top: 460px;
+
+  /* Body (1) 16px Regular */
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+
+  /* identical to box height, or 138% */
+  letter-spacing: -1.30385e-9px;
+
+  /* Grey 3 */
+  color: #9ca8b4;
+  text-transform: none;
+}

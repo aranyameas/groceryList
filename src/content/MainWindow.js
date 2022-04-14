@@ -110,7 +110,12 @@ export function MainWindow(props) {
                   >
                     <CreateOutlinedIcon className="Edit-icon" />
                   </IconButton>
-                  <Edit editOpen={editOpen} setEditOpen={setEditOpen} />
+                  <Edit
+                    editOpen={editOpen}
+                    setEditOpen={setEditOpen}
+                    checked={checked}
+                    setChecked={setChecked}
+                  />
                   <IconButton
                     edge="end"
                     aria-label="comments"
