@@ -17,12 +17,14 @@ import { LastPageOutlined } from "@mui/icons-material";
 
 export const Edit = (props) => {
   const [amount, setAmount] = useState("");
+  const [description, setDescription] = useState({ desc: "" });
   const editOpen = props.editOpen;
   const setEditOpen = props.setEditOpen;
   const handleEditClose = () => setEditOpen(false);
   const checked = props.checked;
   const setChecked = props.setChecked;
   const [value, setValue] = useState(false);
+  const charLimit = 100;
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -35,6 +37,10 @@ export const Edit = (props) => {
     }
 
     setChecked(newChecked);
+  };
+
+  const handleChange = (desc) => (event) => {
+    setDescription({ ...description, [desc]: event.target.value });
   };
 
   const handleEdit = () => {
@@ -70,10 +76,16 @@ export const Edit = (props) => {
                 <FormControl fullWidth>
                   <TextField
                     label={<span className="font-nunito">Item Name</span>}
-                  ></TextField>
+                  />
                   <TextField
+                    multiline
+                    rows={4}
+                    value={description.desc}
+                    inputProps={{ maxLength: charLimit }}
+                    helperText={`${description.desc.length}/${charLimit}`}
+                    onChange={handleChange("desc")}
                     label={<span className="font-nunito">Description</span>}
-                  ></TextField>
+                  />
                   <FormControl fullWidth>
                     <InputLabel id="Quantity">
                       <span className="font-nunito">How Many?</span>

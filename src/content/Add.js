@@ -12,16 +12,23 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
-import { LastPageOutlined } from "@mui/icons-material";
+import { Description, LastPageOutlined } from "@mui/icons-material";
 
 export const Add = (props) => {
   const [amount, setAmount] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState({ desc: "" });
   const addOpen = props.addOpen;
   const setAddOpen = props.setAddOpen;
   const handleAddClose = () => setAddOpen(false);
+  const charLimit = 100;
 
   const handleAdd = () => {
     //Add an item
+  };
+
+  const handleChange = (desc) => (event) => {
+    setDescription({ ...description, [desc]: event.target.value });
   };
 
   return (
@@ -50,10 +57,16 @@ export const Add = (props) => {
               <FormControl fullWidth>
                 <TextField
                   label={<span className="font-nunito">Item Name</span>}
-                ></TextField>
+                />
                 <TextField
+                  multiline
+                  rows={4}
+                  value={description.desc}
+                  inputProps={{ maxLength: charLimit }}
+                  helperText={`${description.desc.length}/${charLimit}`}
+                  onChange={handleChange("desc")}
                   label={<span className="font-nunito">Description</span>}
-                ></TextField>
+                />
                 <FormControl fullWidth>
                   <InputLabel id="Quantity">
                     <span className="font-nunito">How Many?</span>
