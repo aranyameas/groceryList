@@ -256,6 +256,7 @@
   margin: 0px 10px;
   padding-top: 3px;
   padding-bottom: 3px;
+  text-transform: none;
 }
 
 .Loading {
@@ -345,5 +346,66 @@
 
   /* Grey 3 */
   color: #9ca8b4;
+  text-transform: none;
+}
+
+.CharacterHelper-text {
+  display: flex;
+  justify-content: end;
+}
+
+.HowMany-margin {
+  margin-left: 30px;
+}
+
+.AddButton-text {
+  width: 60px;
+  height: 20px;
+  left: calc(50% - 60px / 2);
+  top: calc(50% - 20px / 2);
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+
+  /* identical to box height, or 143% */
+  text-align: center;
+  letter-spacing: -1.30385e-9px;
+
+  /* White */
+  color: #ffffff;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 0px 10px;
+  text-transform: none;
+}
+
+.EditButton-text {
+  width: 63px;
+  height: 20px;
+  left: calc(50% - 63px / 2);
+  top: calc(50% - 20px / 2);
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+
+  /* identical to box height, or 143% */
+  text-align: center;
+  letter-spacing: -1.30385e-9px;
+
+  /* White */
+  color: #ffffff;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 0px 10px;
   text-transform: none;
 }

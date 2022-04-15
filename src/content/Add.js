@@ -57,25 +57,35 @@ export const Add = (props) => {
               <FormControl fullWidth>
                 <TextField
                   label={<span className="font-nunito">Item Name</span>}
+                  sx={{ marginBottom: "18px", marginX: "30px" }}
                 />
                 <TextField
                   multiline
                   rows={4}
                   value={description.desc}
                   inputProps={{ maxLength: charLimit }}
+                  FormHelperTextProps={{ className: "CharacterHelper-text" }}
                   helperText={`${description.desc.length}/${charLimit}`}
                   onChange={handleChange("desc")}
                   label={<span className="font-nunito">Description</span>}
+                  sx={{ marginBottom: "14px", marginX: "30px" }}
                 />
                 <FormControl fullWidth>
                   <InputLabel id="Quantity">
-                    <span className="font-nunito">How Many?</span>
+                    <span className="font-nunito HowMany-margin">
+                      How Many?
+                    </span>
                   </InputLabel>
                   <Select
                     labelid="Quantity"
                     id="Quantity"
-                    label={<span className="font-nunito">How Many?</span>}
+                    label={
+                      <span className="font-nunito HowMany-margin">
+                        How Many?
+                      </span>
+                    }
                     value={amount}
+                    sx={{ marginX: "30px" }}
                   >
                     <MenuItem value={1}>1</MenuItem>
                     <MenuItem value={2}>2</MenuItem>
@@ -88,8 +98,12 @@ export const Add = (props) => {
                   <Button variant="text" onClick={handleAddClose}>
                     <span className="Cancel font-nunito">Cancel</span>
                   </Button>
-                  <Button variant="contained" onClick={handleAdd}>
-                    <span className="font-nunito">Add Task</span>
+                  <Button
+                    variant="contained"
+                    onClick={handleAdd}
+                    sx={{ width: "90px", marginRight: "20px" }}
+                  >
+                    <span className="font-nunito AddButton-text">Add Task</span>
                   </Button>
                 </div>
               </FormControl>

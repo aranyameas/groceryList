@@ -76,6 +76,7 @@ export const Edit = (props) => {
                 <FormControl fullWidth>
                   <TextField
                     label={<span className="font-nunito">Item Name</span>}
+                    sx={{ marginBottom: "18px", marginX: "30px" }}
                   />
                   <TextField
                     multiline
@@ -85,15 +86,24 @@ export const Edit = (props) => {
                     helperText={`${description.desc.length}/${charLimit}`}
                     onChange={handleChange("desc")}
                     label={<span className="font-nunito">Description</span>}
+                    FormHelperTextProps={{ className: "CharacterHelper-text" }}
+                    sx={{ marginBottom: "14px", marginX: "30px" }}
                   />
                   <FormControl fullWidth>
                     <InputLabel id="Quantity">
-                      <span className="font-nunito">How Many?</span>
+                      <span className="font-nunito HowMany-margin">
+                        How Many?
+                      </span>
                     </InputLabel>
                     <Select
                       labelid="Quantity"
                       id="Quantity"
-                      label={<span className="font-nunito">"How many?"</span>}
+                      label={
+                        <span className="font-nunito HowMany-margin">
+                          "How many?"
+                        </span>
+                      }
+                      sx={{ marginX: "30px" }}
                       value={amount}
                     >
                       <MenuItem value={1}>1</MenuItem>
@@ -121,8 +131,13 @@ export const Edit = (props) => {
                     <Button variant="text" onClick={handleEditClose}>
                       <span className="Cancel font-nunito">Cancel</span>
                     </Button>
-                    <Button variant="contained">
-                      <span className="font-nunito">Save Item</span>
+                    <Button
+                      variant="contained"
+                      sx={{ width: "90px", marginRight: "20px" }}
+                    >
+                      <span className="font-nunito EditButton-text">
+                        Save Item
+                      </span>
                     </Button>
                   </div>
                 </FormControl>
