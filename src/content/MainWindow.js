@@ -107,8 +107,16 @@ export function MainWindow(props) {
                     />
                   </Button>
                   <ListItemText
-                    primary={item.itemName}
-                    secondary={item.Description}
+                    primary={
+                      <span className="font-nunito Item-text">
+                        {item.itemName}
+                      </span>
+                    }
+                    secondary={
+                      <span className="font-nunito Description-text">
+                        {item.Description}
+                      </span>
+                    }
                   />
                   <IconButton
                     edge="end"

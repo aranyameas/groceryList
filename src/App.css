@@ -409,3 +409,39 @@
   margin: 0px 10px;
   text-transform: none;
 }
+
+.Item-text {
+  width: 71px;
+  height: 20px;
+  left: 60px;
+  top: 24px;
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  /* identical to box height, or 125% */
+  text-align: center;
+  letter-spacing: -1.30385e-9px;
+
+  color: #000000;
+}
+
+.Description-text {
+  width: 146px;
+  height: 20px;
+  left: 60px;
+  top: 47px;
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+
+  /* identical to box height, or 143% */
+  text-align: center;
+  letter-spacing: -1.30385e-9px;
+
+  color: #7d7a7a;
+}
