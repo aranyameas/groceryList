@@ -34,7 +34,11 @@ export function Delete(props) {
             >
               <span className="Cancel font-nunito">Cancel</span>
             </Button>
-            <Button variant="contained" sx={{ right: "30px" }}>
+            <Button
+              variant="contained"
+              sx={{ right: "30px" }}
+              onClick={handleDelete}
+            >
               <span className="font-nunito">Delete</span>
             </Button>
           </div>

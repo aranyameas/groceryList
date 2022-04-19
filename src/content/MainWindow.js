@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -18,31 +18,28 @@ import { Edit } from "./Edit";
 import { Delete } from "./Delete";
 
 export function MainWindow(props) {
-  const [shoppingList, setShoppingList] = useState([
-    {
-      itemName: "Tomatoes",
-      Description: "Walmart",
-      Quantity: 5,
-    },
-    {
-      itemName: "Tomatoes",
-      Description: "Walmart",
-      Quantity: 5,
-    },
-    {
-      itemName: "Tomatoes",
-      Description: "Walmart",
-      Quantity: 5,
-    },
-  ]);
+  const [shoppingList, setShoppingList] = useState([]);
   const [addOpen, setAddOpen] = useState(false);
   const handleAddOpen = () => setAddOpen(true);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const handleDeleteOpen = () => setDeleteOpen(true);
   const [editOpen, setEditOpen] = useState(false);
   const handleEditOpen = () => setEditOpen(true);
-
   const [checked, setChecked] = useState([0]);
+
+  useEffect(() => {
+    getShoppingList();
+  }, []);
+
+  function getShoppingList() {
+    fetch(process.env.REACT_APP_GET_ITEMS_URL)
+      .then((response) => {
+        return response.text();
+      })
+      .then((data) => {
+        setShoppingList(JSON.parse(data));
+      });
+  }
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -94,13 +91,13 @@ export function MainWindow(props) {
             <Add addOpen={addOpen} setAddOpen={setAddOpen} />
           </div>
           <List>
-            {shoppingList.map((item, index) => {
+            {shoppingList.items.map((item, index) => {
               return (
-                <ListItem key={item.itemName} disablePadding className="List">
-                  <Button onClick={handleToggle(item.itemName)}>
+                <ListItem key={item.item} disablePadding className="List">
+                  <Button onClick={handleToggle(item.item)}>
                     <Checkbox
                       edge="start"
-                      checked={checked.indexOf(item.itemName) !== -1}
+                      checked={checked.indexOf(item.item) !== -1}
                       tabIndex={-1}
                       disableRipple
                       sx={{ color: "#C6C6C6" }}
@@ -108,13 +105,11 @@ export function MainWindow(props) {
                   </Button>
                   <ListItemText
                     primary={
-                      <span className="font-nunito Item-text">
-                        {item.itemName}
-                      </span>
+                      <span className="font-nunito Item-text">{item.item}</span>
                     }
                     secondary={
                       <span className="font-nunito Description-text">
-                        {item.Description}
+                        {item.description}
                       </span>
                     }
                   />
