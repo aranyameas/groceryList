@@ -16,7 +16,7 @@ import {
 import { LastPageOutlined } from "@mui/icons-material";
 
 export const Edit = (props) => {
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(1);
   const [description, setDescription] = useState({ desc: "" });
   const editOpen = props.editOpen;
   const setEditOpen = props.setEditOpen;
@@ -44,14 +44,16 @@ export const Edit = (props) => {
   };
 
   const handleEdit = () => {
-    setAmount(1);
-    setValue(1);
-    // axios
-    //   .get(process.env.DATABASE_URL/"update/", { crossdomain: true })
-    //   .then((response) => {
-    //     setText(response.data.text);
-    //     setAuthor(response.data.author);
-    //   });
+    // const requestOptions = {
+    //   method: "PUT",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ title: "React Hooks PUT Request Example" }),
+    // };
+    // fetch("https://jsonplaceholder.typicode.com/posts/1", requestOptions)
+    //   .then((response) => response.json())
+    //   .then((data) => setPostId(data.id));
+    // setValue();
+    // setAmount();
   };
 
   return (

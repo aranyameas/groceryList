@@ -36,14 +36,13 @@ export const Add = (props) => {
       body: JSON.stringify(payload),
     };
 
-    console.log(requestOptions);
-
     fetch(process.env.REACT_APP_ADD_ITEM_URL, requestOptions)
       .then((response) => response.json())
       .then((response) => console.log("SUCCESS", JSON.stringify(response)))
       .catch((error) => console.error("Error:", error));
 
     handleAddClose();
+    window.location.reload(false);
   };
 
   const handleItemChange = (event) => {
