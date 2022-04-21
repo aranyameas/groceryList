@@ -22,6 +22,7 @@ export function MainWindow(props) {
   const [addOpen, setAddOpen] = useState(false);
   const handleAddOpen = () => setAddOpen(true);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteItem, setDeleteItem] = useState("");
   const handleDeleteOpen = () => setDeleteOpen(true);
   const [editOpen, setEditOpen] = useState(false);
   const handleEditOpen = () => setEditOpen(true);
@@ -37,6 +38,7 @@ export function MainWindow(props) {
         return response.text();
       })
       .then((data) => {
+        console.log(data);
         setShoppingList(JSON.parse(data));
       });
   }
@@ -92,53 +94,58 @@ export function MainWindow(props) {
           </div>
           <List>
             {shoppingList.items.map((item, index) => {
-              return (
-                <ListItem key={item.item} disablePadding className="List">
-                  <Button onClick={handleToggle(item.item)}>
-                    <Checkbox
-                      edge="start"
-                      checked={checked.indexOf(item.item) !== -1}
-                      tabIndex={-1}
-                      disableRipple
-                      sx={{ color: "#C6C6C6" }}
+              for (var i = item.quantity; i > 0; --i) {
+                return (
+                  <ListItem key={item.item} disablePadding className="List">
+                    <Button onClick={handleToggle(item.item)}>
+                      <Checkbox
+                        edge="start"
+                        checked={checked.indexOf(item.item) !== -1}
+                        tabIndex={-1}
+                        disableRipple
+                        sx={{ color: "#C6C6C6" }}
+                      />
+                    </Button>
+                    <ListItemText
+                      primary={
+                        <span className="font-nunito Item-text">
+                          {item.item}
+                        </span>
+                      }
+                      secondary={
+                        <span className="font-nunito Description-text">
+                          {item.description}
+                        </span>
+                      }
                     />
-                  </Button>
-                  <ListItemText
-                    primary={
-                      <span className="font-nunito Item-text">{item.item}</span>
-                    }
-                    secondary={
-                      <span className="font-nunito Description-text">
-                        {item.description}
-                      </span>
-                    }
-                  />
-                  <IconButton
-                    edge="end"
-                    aria-label="comments"
-                    onClick={handleEditOpen}
-                  >
-                    <CreateOutlinedIcon className="Edit-icon" />
-                  </IconButton>
-                  <Edit
-                    editOpen={editOpen}
-                    setEditOpen={setEditOpen}
-                    checked={checked}
-                    setChecked={setChecked}
-                  />
-                  <IconButton
-                    edge="end"
-                    aria-label="comments"
-                    onClick={handleDeleteOpen}
-                  >
-                    <DeleteOutlinedIcon className="Delete-icon" />
-                  </IconButton>
-                  <Delete
-                    deleteOpen={deleteOpen}
-                    setDeleteOpen={setDeleteOpen}
-                  />
-                </ListItem>
-              );
+                    <IconButton
+                      edge="end"
+                      aria-label="comments"
+                      onClick={handleEditOpen}
+                    >
+                      <CreateOutlinedIcon className="Edit-icon" />
+                    </IconButton>
+                    <Edit
+                      editOpen={editOpen}
+                      setEditOpen={setEditOpen}
+                      checked={checked}
+                      setChecked={setChecked}
+                    />
+                    <IconButton
+                      edge="end"
+                      aria-label="comments"
+                      onClick={handleDeleteOpen}
+                    >
+                      <DeleteOutlinedIcon className="Delete-icon" />
+                    </IconButton>
+                    <Delete
+                      deleteOpen={deleteOpen}
+                      setDeleteOpen={setDeleteOpen}
+                      item={item}
+                    />
+                  </ListItem>
+                );
+              }
             })}
           </List>
         </div>

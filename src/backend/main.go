@@ -30,8 +30,8 @@ func SetupRoutes() *gin.Engine {
 	// Update to POST, UPDATE, DELETE etc
 	router.GET("/items", api.GetItems)
 	router.GET("/item/:itemName", api.GetItem)
-	router.POST("/item/add/:itemName/:description/:quantity", api.AddItem)
-	router.PUT("/item/update/:itemName/:newName/:description/:quantity", api.UpdateItem)
+	router.POST("/item/add", api.AddItem)
+	router.PUT("/item/update/:itemName", api.UpdateItem)
 	router.DELETE("/item/delete/:itemName", api.DeleteItem)
 
 	// Set up Gin Server

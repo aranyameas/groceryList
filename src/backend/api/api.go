@@ -126,23 +126,22 @@ func GetItem(c *gin.Context) {
 
 //Create item and add to DB
 func AddItem(c *gin.Context) {
-	item := c.Param("itemName")
-	description := c.Param("description")
-	quantity := c.Param("quantity")
+	var req ListItem
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
 	// Validate item
-	if len(item) == 0 {
+	if len(req.Item) == 0 {
 		c.JSON(http.StatusNotAcceptable, gin.H{"message": "please enter an item name"})
 	} else {
 		// Create item
 		var Item ListItem
 
-		Item.Item = item
-		Item.Description = description
-		Item.Quantity, err = strconv.Atoi(quantity)
-		if err != nil {
-			fmt.Println(err)
-	  }
+		Item.Item = req.Item
+		Item.Description = req.Description
+		Item.Quantity = req.Quantity
 
 		// Insert item to DB
 		sqlStatement := `
@@ -155,7 +154,7 @@ func AddItem(c *gin.Context) {
 
 
 		// Log message
-		log.Println("created shopping list item", item)
+		log.Println("created shopping list item", Item.Item)
 
 		// Return success response
 		c.Header("Access-Control-Allow-Origin", "*")

@@ -2,12 +2,29 @@ import * as React from "react";
 import { Backdrop, Box, Button, Modal } from "@mui/material";
 
 export function Delete(props) {
+  const item = props.item;
   const { deleteOpen } = props;
   const { setDeleteOpen } = props;
   const handleDeleteClose = () => setDeleteOpen(false);
 
   const handleDelete = () => {
-    // Delete an item
+    /*if(item.quantity > 1) {
+      const q = --item.quantity
+      const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: 'React PUT Request Example' })
+    };
+    fetch('https://jsonplaceholder.typicode.com/posts/1', requestOptions)
+        .then(response => response.json())
+        .then(data => this.setState({ postId: data.id }));
+    }
+    else {}
+    */
+    fetch(process.env.REACT_APP_DELETE_ITEM_URL + "/" + item.item, {
+      method: "DELETE",
+    }).then(() => console.log("Delete successful"));
+    handleDeleteClose();
   };
 
   return (
