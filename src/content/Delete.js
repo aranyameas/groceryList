@@ -25,6 +25,7 @@ export function Delete(props) {
       method: "DELETE",
     }).then(() => console.log("Delete successful"));
     handleDeleteClose();
+    window.location.reload(false);
   };
 
   return (

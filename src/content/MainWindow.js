@@ -106,7 +106,9 @@ export function MainWindow(props) {
                   </Button>
                   <ListItemText
                     primary={
-                      <span className="font-nunito Item-text">{item.item}</span>
+                      <span className="font-nunito Item-text">
+                        {item.quantity + " " + item.item}
+                      </span>
                     }
                     secondary={
                       <span className="font-nunito Description-text">
