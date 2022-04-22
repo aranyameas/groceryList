@@ -12,6 +12,7 @@ import {
   InputLabel,
   FormControl,
   Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import { LastPageOutlined } from "@mui/icons-material";
 
@@ -20,6 +21,7 @@ export const Edit = (props) => {
   const shoppingList = props.shoppingList;
   const setShoppingList = props.setShoppingList;
   const [quantity, setQuantity] = useState(item.quantity);
+  const [purchased, setPurchased] = useState(item.purchased);
   const [description, setDescription] = useState({ desc: item.description });
   const [itemName, setItemName] = useState(item.name);
   const editOpen = props.editOpen;
@@ -35,17 +37,11 @@ export const Edit = (props) => {
     setShoppingList([...res]);
   };
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
+  const handleToggle = () => {
+    const res = shoppingList.map((s) =>
+      s.name === item.name ? { ...s, purchased: !s.purchased } : s
+    );
+    setShoppingList([...res]);
   };
 
   const handleChange = (desc) => (event) => {
@@ -58,12 +54,13 @@ export const Edit = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(description);
     const payload = {
-      item: itemName,
-      description: description,
+      name: itemName,
+      description: description.desc,
       quantity: quantity,
+      purchased: purchased,
     };
+    console.log(payload);
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -150,20 +147,22 @@ export const Edit = (props) => {
                       <MenuItem value={5}>5</MenuItem>
                     </Select>
                   </FormControl>
-                  <Button
-                    sx={{ justifyContent: "flex-start", marginLeft: "24px" }}
-                    onClick={handleToggle(value)}
-                  >
-                    <Checkbox
-                      edge="start"
-                      checked={checked.indexOf(value) !== -1}
-                      tabIndex={-1}
-                      disableRipple
-                      //inputProps={{ "aria-labelledby": labelId }}
-                      sx={{ color: "#C6C6C6" }}
-                    />{" "}
-                    <span className="Purchased font-nunito">Purchased</span>
-                  </Button>
+                  <FormControlLabel
+                    label={
+                      <span className="Purchased font-nunito">Purchased</span>
+                    }
+                    control={
+                      <Checkbox
+                        checked={item.purchased}
+                        onChange={handleToggle}
+                        name="purchased"
+                        sx={{
+                          justifyContent: "flex-start",
+                          marginLeft: "30px",
+                        }}
+                      />
+                    }
+                  />
                   <div className="Modal-buttons">
                     <Button variant="text" onClick={handleEditClose}>
                       <span className="Cancel font-nunito">Cancel</span>
@@ -171,6 +170,7 @@ export const Edit = (props) => {
                     <Button
                       variant="contained"
                       sx={{ width: "90px", marginRight: "20px" }}
+                      type="Submit"
                     >
                       <span className="font-nunito EditButton-text">
                         Save Item

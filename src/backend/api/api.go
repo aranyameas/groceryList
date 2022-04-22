@@ -20,6 +20,7 @@ type ListItem struct {
 	Quantity    int    `json:"quantity"`
 	Delete        bool   `json:"delete"`
 	Edit        bool   `json:"edit"`
+	Purchased bool `json:"purchased"`
 }
 
 var db *sql.DB
@@ -76,7 +77,7 @@ func GetItems(c *gin.Context) {
 		for rows.Next() {
 			// Individual row processing
 			item := ListItem{}
-			if err := rows.Scan(&item.Name, &item.Description, &item.Quantity, &item.Delete, &item.Edit); err != nil {
+			if err := rows.Scan(&item.Name, &item.Description, &item.Quantity, &item.Delete, &item.Edit, &item.Purchased); err != nil {
 				fmt.Println(err)
 				c.JSON(http.StatusInternalServerError, gin.H{"message": "error with DB"})
 			}
@@ -110,7 +111,7 @@ func GetItem(c *gin.Context) {
 		for rows.Next() {
 			// Individual row processing
 			item := ListItem{}
-			if err := rows.Scan(&item.Name, &item.Description, &item.Quantity, &item.Delete, &item.Edit); err != nil {
+			if err := rows.Scan(&item.Name, &item.Description, &item.Quantity, &item.Delete, &item.Edit, &item.Purchased); err != nil {
 				fmt.Println(err.Error())
 				c.JSON(http.StatusInternalServerError, gin.H{"message": "error with DB"})
 			}
@@ -145,12 +146,13 @@ func AddItem(c *gin.Context) {
 		Item.Quantity = req.Quantity
 		Item.Delete = req.Delete
 		Item.Edit = req.Edit
+		Item.Purchased = req.Purchased
 
 		// Insert item to DB
 		sqlStatement := `
-		INSERT INTO shoppinglist(name, description, quantity, delete, edit)
-		VALUES ($1, $2, $3, $4, $5)`
-		_, err = db.Exec(sqlStatement, Item.Name, Item.Description, Item.Quantity, Item.Delete, Item.Edit)
+		INSERT INTO shoppinglist(name, description, quantity, delete, edit, purchased)
+		VALUES ($1, $2, $3, $4, $5, $6)`
+		_, err = db.Exec(sqlStatement, Item.Name, Item.Description, Item.Quantity, Item.Delete, Item.Edit, Item.Purchased)
 		if err != nil {
 			panic(err)
 		}
@@ -167,39 +169,40 @@ func AddItem(c *gin.Context) {
 
 // // Update item
 func UpdateItem(c *gin.Context) {
-	itemName := c.Param("itemName")
-	newName := c.Param("newName")
-	description := c.Param("description")
-	quantity := c.Param("quantity")
-	delete := c.Param("delete")
-	edit := c.Param("edit")
+	var req ListItem
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-	// Validate id and done
-	if len(itemName) == 0 {
-		c.JSON(http.StatusNotAcceptable, gin.H{"message": "please enter an item"})
-	} else {
+	var Item ListItem
+
+		Item.Name = req.Name
+		Item.Description = req.Description
+		Item.Quantity = req.Quantity
+		Item.Purchased = req.Purchased
+
 		// Find and update the item
 		var exists bool
-		err := db.QueryRow("SELECT * FROM shoppinglist WHERE name=$1;", itemName).Scan(&exists)
+		err := db.QueryRow("SELECT * FROM shoppinglist WHERE name=$1;", Item.Name).Scan(&exists)
 		if err != nil && err == sql.ErrNoRows {
 			fmt.Println(err)
 			c.JSON(http.StatusNotFound, gin.H{"message": "not found"})
 		} else {
-			_, err := db.Query("UPDATE shoppinglist SET name=$2, description=$3, quantity=$4, delete=$5, edit=$6 WHERE name=$1;", itemName, newName, description, quantity, delete, edit)
+			_, err := db.Query("UPDATE shoppinglist SET name=$1, description=$2, quantity=$3, purchased=$4 WHERE name=$1;", Item.Name, Item.Description, Item.Quantity, Item.Purchased)
 			if err != nil {
 				fmt.Println(err)
 				c.JSON(http.StatusInternalServerError, gin.H{"message": "error with DB"})
 			}
 
 			// Log message
-			log.Println("updated item", newName)
+			log.Println("updated item", Item.Name)
 
 			// Return success response
 			c.Header("Access-Control-Allow-Origin", "*")
 			c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
-			c.JSON(http.StatusOK, gin.H{"message": "successfully updated item", "item": newName})
+			c.JSON(http.StatusOK, gin.H{"message": "successfully updated item", "item": Item.Name})
 		}
-	}
 }
 
 // // Delete item

@@ -32,7 +32,6 @@ export const Add = (props) => {
       delete: false,
       edit: false,
     };
-    console.log("PAYLOAD: ", payload);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
