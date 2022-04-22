@@ -17,28 +17,13 @@ import { Add } from "./Add";
 import { Edit } from "./Edit";
 import { Delete } from "./Delete";
 
-const test = {
-  items: [{
-    name: "asdf",
-    description: "asdfas",
-    quantity: 1,
-    open: false
-  },
-  {
-    name: "blah",
-    description: "asdfas",
-    quantity: 2,
-    open: false
-  }]
-}
-
 export function MainWindow(props) {
   const [shoppingList, setShoppingList] = useState([]);
   const [addOpen, setAddOpen] = useState(false);
-  const handleAddOpen = () => setAddOpen(true)
+  const handleAddOpen = () => setAddOpen(true);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleteItem, setDeleteItem] = useState("");
-  // const handleDeleteOpen = () => setDeleteOpen(true);
+  const handleDeleteOpen = () => setDeleteOpen(true);
   const [editOpen, setEditOpen] = useState(false);
   const handleEditOpen = () => setEditOpen(true);
   const [checked, setChecked] = useState([0]);
@@ -48,28 +33,14 @@ export function MainWindow(props) {
   }, []);
 
   function getShoppingList() {
-    // fetch(process.env.REACT_APP_GET_ITEMS_URL)
-    //   .then((response) => {
-    //     return response.text();
-    //   })
-    //   .then((data) => {
-    //     // const result = JSON.parse(data).map(item => {
-    //     //   return []
-    //     // })
-
-    //     setShoppingList(JSON.parse(data));
-    //   });
-    setShoppingList(test.items)
+    fetch(process.env.REACT_APP_GET_ITEMS_URL)
+      .then((response) => {
+        return response.text();
+      })
+      .then((data) => {
+        setShoppingList(JSON.parse(data));
+      });
   }
-
-  const handleDeleteOpen = (item) => {
-    // const newList = shoppingList
-    const res = shoppingList.map(s =>
-      s.name === item ? { ...s, open: true } : s
-    )
-    // newList.items = res
-    setShoppingList([...res])
-  };
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -121,13 +92,13 @@ export function MainWindow(props) {
             <Add addOpen={addOpen} setAddOpen={setAddOpen} />
           </div>
           <List>
-            {shoppingList.map((item, index) => {
+            {shoppingList.items.map((item, index) => {
               return (
-                <ListItem key={item.name} disablePadding className="List">
-                  <Button onClick={handleToggle(item.name)}>
+                <ListItem key={item.item} disablePadding className="List">
+                  <Button onClick={handleToggle(item.item)}>
                     <Checkbox
                       edge="start"
-                      checked={checked.indexOf(item.name) !== -1}
+                      checked={checked.indexOf(item.item) !== -1}
                       tabIndex={-1}
                       disableRipple
                       sx={{ color: "#C6C6C6" }}
@@ -136,7 +107,7 @@ export function MainWindow(props) {
                   <ListItemText
                     primary={
                       <span className="font-nunito Item-text">
-                        {item.quantity + " " + item.name}
+                        {item.quantity + " " + item.item}
                       </span>
                     }
                     secondary={
@@ -161,12 +132,12 @@ export function MainWindow(props) {
                   <IconButton
                     edge="end"
                     aria-label="comments"
-                    onClick={() => handleDeleteOpen(item.name)}
+                    onClick={handleDeleteOpen}
                   >
                     <DeleteOutlinedIcon className="Delete-icon" />
                   </IconButton>
                   <Delete
-                    deleteOpen={item.open}
+                    deleteOpen={deleteOpen}
                     setDeleteOpen={setDeleteOpen}
                     item={item}
                   />

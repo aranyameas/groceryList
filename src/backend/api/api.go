@@ -15,10 +15,9 @@ import (
 )
 
 type ListItem struct {
-	Name        string `json:"name"`
+	Item   string `json:"item"`
 	Description string `json:"description"`
-	Quantity    int    `json:"quantity"`
-	Open        bool   `json:"open"`
+	Quantity int   `json:"quantity"`
 }
 
 var db *sql.DB
@@ -27,21 +26,22 @@ var err error
 func SetupPostgres() {
 	err := godotenv.Load(".env")
 
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
+    if err != nil {
+        log.Fatalf("Error loading .env file")
+    }
 
-	host := os.Getenv("APP_DB_HOST")
-	port, err := strconv.Atoi(os.Getenv("APP_DB_PORT"))
-	if err != nil {
-		fmt.Println("Error converting port: ", err)
-	}
-	user := os.Getenv("APP_DB_USERNAME")
-	dbname := os.Getenv("APP_DB_NAME")
+		host := os.Getenv("APP_DB_HOST")
+		port, err := strconv.Atoi(os.Getenv("APP_DB_PORT"))
+		if err!= nil {
+			fmt.Println("Error converting port: ", err)
+		}
+		user := os.Getenv("APP_DB_USERNAME")
+		dbname := os.Getenv("APP_DB_NAME")
+
 
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"dbname=%s sslmode=disable",
-		host, port, user, dbname)
+    "dbname=%s sslmode=disable",
+    host, port, user, dbname)
 
 	db, err = sql.Open("postgres", psqlInfo)
 
@@ -69,17 +69,17 @@ func GetItems(c *gin.Context) {
 
 	// Get all rows and add into items
 	items := make([]ListItem, 0)
-
+	
 	if rows != nil {
 		defer rows.Close()
 		for rows.Next() {
 			// Individual row processing
 			item := ListItem{}
-			if err := rows.Scan(&item.Name, &item.Description, &item.Quantity, &item.Open); err != nil {
+			if err := rows.Scan(&item.Item, &item.Description, &item.Quantity); err != nil {
 				fmt.Println(err)
 				c.JSON(http.StatusInternalServerError, gin.H{"message": "error with DB"})
 			}
-			item.Name = strings.TrimSpace(item.Name)
+			item.Item = strings.TrimSpace(item.Item)
 			items = append(items, item)
 		}
 	}
@@ -95,7 +95,7 @@ func GetItem(c *gin.Context) {
 	// Use SELECT Query to obtain all rows
 	itemName := c.Param("itemName")
 
-	rows, err := db.Query("SELECT * FROM shoppinglist WHERE name = ($1)", itemName)
+	rows, err := db.Query("SELECT * FROM shoppinglist WHERE item = ($1)", itemName)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "error with DB"})
@@ -103,17 +103,17 @@ func GetItem(c *gin.Context) {
 
 	// Get all rows and add into items
 	items := make([]ListItem, 0)
-
+	
 	if rows != nil {
 		defer rows.Close()
 		for rows.Next() {
 			// Individual row processing
 			item := ListItem{}
-			if err := rows.Scan(&item.Name, &item.Description, &item.Quantity, &item.Open); err != nil {
+			if err := rows.Scan(&item.Item, &item.Description, &item.Quantity); err != nil {
 				fmt.Println(err.Error())
 				c.JSON(http.StatusInternalServerError, gin.H{"message": "error with DB"})
 			}
-			item.Name = strings.TrimSpace(item.Name)
+			item.Item = strings.TrimSpace(item.Item)
 			items = append(items, item)
 		}
 	}
@@ -133,28 +133,28 @@ func AddItem(c *gin.Context) {
 	}
 
 	// Validate item
-	if len(req.Name) == 0 {
+	if len(req.Item) == 0 {
 		c.JSON(http.StatusNotAcceptable, gin.H{"message": "please enter an item name"})
 	} else {
 		// Create item
 		var Item ListItem
 
-		Item.Name = req.Name
+		Item.Item = req.Item
 		Item.Description = req.Description
 		Item.Quantity = req.Quantity
-		Item.Open = req.Open
 
 		// Insert item to DB
 		sqlStatement := `
-		INSERT INTO shoppinglist(name, description, quantity, open)
+		INSERT INTO shoppinglist(item, description, quantity)
 		VALUES ($1, $2, $3)`
-		_, err = db.Exec(sqlStatement, Item.Name, Item.Description, Item.Quantity, Item.Open)
+		_, err = db.Exec(sqlStatement, Item.Item, Item.Description, Item.Quantity)
 		if err != nil {
-			panic(err)
+  			panic(err)
 		}
 
+
 		// Log message
-		log.Println("created shopping list item", Item.Name)
+		log.Println("created shopping list item", Item.Item)
 
 		// Return success response
 		c.Header("Access-Control-Allow-Origin", "*")
@@ -169,7 +169,6 @@ func UpdateItem(c *gin.Context) {
 	newName := c.Param("newName")
 	description := c.Param("description")
 	quantity := c.Param("quantity")
-	open := c.Param("open")
 
 	// Validate id and done
 	if len(itemName) == 0 {
@@ -177,12 +176,12 @@ func UpdateItem(c *gin.Context) {
 	} else {
 		// Find and update the item
 		var exists bool
-		err := db.QueryRow("SELECT * FROM shoppinglist WHERE name=$1;", itemName).Scan(&exists)
+		err := db.QueryRow("SELECT * FROM shoppinglist WHERE item=$1;", itemName).Scan(&exists)
 		if err != nil && err == sql.ErrNoRows {
 			fmt.Println(err)
 			c.JSON(http.StatusNotFound, gin.H{"message": "not found"})
 		} else {
-			_, err := db.Query("UPDATE shoppinglist SET name=$2, description=$3, quantity=$4, open=$5 WHERE name=$1;", itemName, newName, description, quantity, open)
+			_, err := db.Query("UPDATE shoppinglist SET item=$2, description=$3, quantity=$4 WHERE item=$1;", itemName, newName, description, quantity)
 			if err != nil {
 				fmt.Println(err)
 				c.JSON(http.StatusInternalServerError, gin.H{"message": "error with DB"})
@@ -209,12 +208,12 @@ func DeleteItem(c *gin.Context) {
 	} else {
 		// Find and delete the item
 		var exists bool
-		err := db.QueryRow("SELECT * FROM shoppinglist WHERE name=$1;", itemName).Scan(&exists)
+		err := db.QueryRow("SELECT * FROM shoppinglist WHERE item=$1;", itemName).Scan(&exists)
 		if err != nil && err == sql.ErrNoRows {
 			fmt.Println(err)
 			c.JSON(http.StatusNotFound, gin.H{"message": "not found"})
 		} else {
-			_, err = db.Query("DELETE FROM shoppinglist WHERE name=$1;", itemName)
+			_, err = db.Query("DELETE FROM shoppinglist WHERE item=$1;", itemName)
 			if err != nil {
 				fmt.Println(err)
 				c.JSON(http.StatusInternalServerError, gin.H{"message": "error with DB"})
