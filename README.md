@@ -58,6 +58,16 @@ In /shoppingList/src/backend
 go run .
 ```
 
+### Add a .env file to /shoppingList
+
+#### Environment Variables Used
+
+    REACT_APP_DB_URL=http://localhost:3001
+    REACT_APP_GET_ITEMS_URL=http://localhost:3001/items
+    REACT_APP_ADD_ITEM_URL=http://localhost:3001/item/add
+    REACT_APP_UPDATE_ITEM_URL=http://localhost:3001/item/update
+    REACT_APP_DELETE_ITEM_URL=http://localhost:3001/item/delete
+
 ### Run your web app
 
 In /shoppingList
