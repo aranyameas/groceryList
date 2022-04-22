@@ -29,6 +29,8 @@ export const Add = (props) => {
       item: itemName,
       description: description.desc,
       quantity: quantity,
+      delete: false,
+      edit: false,
     };
     const requestOptions = {
       method: "POST",

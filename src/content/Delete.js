@@ -1,27 +1,22 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { Backdrop, Box, Button, Modal } from "@mui/material";
 
 export function Delete(props) {
   const item = props.item;
-  const { deleteOpen } = props;
-  const { setDeleteOpen } = props;
-  const handleDeleteClose = () => setDeleteOpen(false);
+  // const { deleteOpen } = props.deleteOpen;
+  // const setDeleteOpen = props.setDeleteOpen;
+  const shoppingList = props.shoppingList;
+  const setShoppingList = props.setShoppingList;
+
+  const handleDeleteClose = () => {
+    const res = shoppingList.map((s) =>
+      s.name === item.name ? { ...s, delete: false } : s
+    );
+    setShoppingList([...res]);
+  };
 
   const handleDelete = () => {
-    /*if(item.quantity > 1) {
-      const q = --item.quantity
-      const requestOptions = {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: 'React PUT Request Example' })
-    };
-    fetch('https://jsonplaceholder.typicode.com/posts/1', requestOptions)
-        .then(response => response.json())
-        .then(data => this.setState({ postId: data.id }));
-    }
-    else {}
-    */
-    fetch(process.env.REACT_APP_DELETE_ITEM_URL + "/" + item.item, {
+    fetch(process.env.REACT_APP_DELETE_ITEM_URL + "/" + item.name, {
       method: "DELETE",
     }).then(() => console.log("Delete successful"));
     handleDeleteClose();
@@ -31,7 +26,7 @@ export function Delete(props) {
   return (
     <div>
       <Modal
-        open={deleteOpen}
+        open={item.delete}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         BackdropComponent={Backdrop}
