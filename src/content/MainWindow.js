@@ -8,6 +8,7 @@ import {
   ListItemText,
   CircularProgress,
   Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
@@ -40,6 +41,59 @@ export function MainWindow(props) {
       });
   }
 
+  function Purchased(props) {
+    const name = props.name;
+    const description = props.description;
+    const quantity = props.quantity;
+    return (
+      <ListItemText
+        primary={
+          <span className="font-nunito PurchasedItem-text">
+            {name + " - " + quantity}
+          </span>
+        }
+        secondary={
+          <span className="font-nunito PurchasedDescription-text">
+            {description}
+          </span>
+        }
+      />
+    );
+  }
+
+  function NotPurchased(props) {
+    const name = props.name;
+    const description = props.description;
+    const quantity = props.quantity;
+    return (
+      <ListItemText
+        primary={
+          <span className="font-nunito Item-text">
+            {name + " - " + quantity}
+          </span>
+        }
+        secondary={
+          <span className="font-nunito Description-text">{description}</span>
+        }
+      />
+    );
+  }
+
+  function CheckPurchased(props) {
+    const isPurchased = props.isPurchased;
+    const name = props.name;
+    const description = props.description;
+    const quantity = props.quantity;
+    if (isPurchased) {
+      return (
+        <Purchased name={name} description={description} quantity={quantity} />
+      );
+    }
+    return (
+      <NotPurchased name={name} description={description} quantity={quantity} />
+    );
+  }
+
   const handleDeleteOpen = (item) => {
     // const newList = shoppingList
     const res = shoppingList.map((s) =>
@@ -58,17 +112,11 @@ export function MainWindow(props) {
     setShoppingList([...res]);
   };
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
+  const handleToggle = (item) => {
+    const res = shoppingList.map((s) =>
+      s.name === item ? { ...s, purchased: !s.purchased } : s
+    );
+    setShoppingList([...res]);
   };
 
   if (!shoppingList) {
@@ -111,26 +159,21 @@ export function MainWindow(props) {
             {shoppingList.map((item, index) => {
               return (
                 <ListItem key={item.name} disablePadding className="List">
-                  <Button onClick={handleToggle(item.name)}>
-                    <Checkbox
-                      edge="start"
-                      checked={checked.indexOf(item.name) !== -1}
-                      tabIndex={-1}
-                      disableRipple
-                      sx={{ color: "#C6C6C6" }}
-                    />
-                  </Button>
-                  <ListItemText
-                    primary={
-                      <span className="font-nunito Item-text">
-                        {item.name + " - " + item.quantity}
-                      </span>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={item.purchased}
+                        onChange={() => handleToggle(item.name)}
+                        name="purchased"
+                        sx={{ marginLeft: "21px", color: "#C6C6C6C6" }}
+                      />
                     }
-                    secondary={
-                      <span className="font-nunito Description-text">
-                        {item.description}
-                      </span>
-                    }
+                  />
+                  <CheckPurchased
+                    isPurchased={item.purchased}
+                    name={item.name}
+                    description={item.description}
+                    quantity={item.quantity}
                   />
                   <IconButton
                     edge="end"

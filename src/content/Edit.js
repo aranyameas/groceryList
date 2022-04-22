@@ -58,9 +58,8 @@ export const Edit = (props) => {
       name: itemName,
       description: description.desc,
       quantity: quantity,
-      purchased: purchased,
+      purchased: item.purchased,
     };
-    console.log(payload);
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
