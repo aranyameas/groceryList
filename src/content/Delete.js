@@ -3,8 +3,6 @@ import { Backdrop, Box, Button, Modal } from "@mui/material";
 
 export function Delete(props) {
   const item = props.item;
-  // const { deleteOpen } = props.deleteOpen;
-  // const setDeleteOpen = props.setDeleteOpen;
   const shoppingList = props.shoppingList;
   const setShoppingList = props.setShoppingList;
 

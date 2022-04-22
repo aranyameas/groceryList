@@ -26,12 +26,13 @@ export const Add = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const payload = {
-      item: itemName,
+      name: itemName,
       description: description.desc,
       quantity: quantity,
       delete: false,
       edit: false,
     };
+    console.log("PAYLOAD: ", payload);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },

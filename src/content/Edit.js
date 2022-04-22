@@ -16,16 +16,24 @@ import {
 import { LastPageOutlined } from "@mui/icons-material";
 
 export const Edit = (props) => {
-  const [quantity, setQuantity] = useState(props.quantity);
-  const [description, setDescription] = useState({ desc: props.description });
-  const [itemName, setItemName] = useState(props.itemName);
+  const item = props.item;
+  const shoppingList = props.shoppingList;
+  const setShoppingList = props.setShoppingList;
+  const [quantity, setQuantity] = useState(item.quantity);
+  const [description, setDescription] = useState({ desc: item.description });
+  const [itemName, setItemName] = useState(item.name);
   const editOpen = props.editOpen;
-  const setEditOpen = props.setEditOpen;
-  const handleEditClose = () => setEditOpen(false);
   const checked = props.checked;
   const setChecked = props.setChecked;
   const [value, setValue] = useState(false);
   const charLimit = 100;
+
+  const handleEditClose = () => {
+    const res = shoppingList.map((s) =>
+      s.name === item.name ? { ...s, edit: false } : s
+    );
+    setShoppingList([...res]);
+  };
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -53,19 +61,21 @@ export const Edit = (props) => {
     console.log(description);
     const payload = {
       item: itemName,
-      description: description.desc,
+      description: description,
       quantity: quantity,
     };
-    // const requestOptions = {
-    //   method: "PUT",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(payload),
-    // };
-    // fetch(process.env.REACT_APP_UPDATE_ITEM_URL, requestOptions)
-    //   .then((response) => response.json())
-    //   .then((data) => setPostId(data.id));
-    // setValue();
-    // setAmount();
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    };
+    fetch(
+      process.env.REACT_APP_UPDATE_ITEM_URL + "/" + itemName,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((response) => console.log("SUCCESS", JSON.stringify(response)))
+      .catch((error) => console.error("Error:", error));
 
     handleEditClose();
     window.location.reload(false);
@@ -106,8 +116,9 @@ export const Edit = (props) => {
                     multiline
                     rows={4}
                     value={description.desc}
+                    name="description"
                     inputProps={{ maxLength: charLimit }}
-                    helperText={`${description.length}/${charLimit}`}
+                    helperText={`${description.desc.length}/${charLimit}`}
                     onChange={handleChange("desc")}
                     label={<span className="font-nunito">Description</span>}
                     FormHelperTextProps={{ className: "CharacterHelper-text" }}
@@ -140,7 +151,7 @@ export const Edit = (props) => {
                     </Select>
                   </FormControl>
                   <Button
-                    sx={{ justifyContent: "flex-start" }}
+                    sx={{ justifyContent: "flex-start", marginLeft: "24px" }}
                     onClick={handleToggle(value)}
                   >
                     <Checkbox

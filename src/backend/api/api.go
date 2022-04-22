@@ -149,7 +149,7 @@ func AddItem(c *gin.Context) {
 		// Insert item to DB
 		sqlStatement := `
 		INSERT INTO shoppinglist(name, description, quantity, delete, edit)
-		VALUES ($1, $2, $3)`
+		VALUES ($1, $2, $3, $4, $5)`
 		_, err = db.Exec(sqlStatement, Item.Name, Item.Description, Item.Quantity, Item.Delete, Item.Edit)
 		if err != nil {
 			panic(err)
