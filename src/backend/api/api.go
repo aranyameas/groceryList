@@ -92,40 +92,6 @@ func GetItems(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"items": items})
 }
 
-//Get an item
-func GetItem(c *gin.Context) {
-	// Use SELECT Query to obtain all rows
-	itemName := c.Param("itemName")
-
-	rows, err := db.Query("SELECT * FROM shoppinglist WHERE name = ($1)", itemName)
-	if err != nil {
-		fmt.Println(err)
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "error with DB"})
-	}
-
-	// Get all rows and add into items
-	items := make([]ListItem, 0)
-
-	if rows != nil {
-		defer rows.Close()
-		for rows.Next() {
-			// Individual row processing
-			item := ListItem{}
-			if err := rows.Scan(&item.Name, &item.Description, &item.Quantity, &item.Delete, &item.Edit, &item.Purchased); err != nil {
-				fmt.Println(err.Error())
-				c.JSON(http.StatusInternalServerError, gin.H{"message": "error with DB"})
-			}
-			item.Name = strings.TrimSpace(item.Name)
-			items = append(items, item)
-		}
-	}
-
-	// Return JSON object of all rows
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
-	c.JSON(http.StatusOK, gin.H{"items": items})
-}
-
 //Create item and add to DB
 func AddItem(c *gin.Context) {
 	var req ListItem
