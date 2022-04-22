@@ -18,13 +18,10 @@ import { Add } from "./Add";
 import { Edit } from "./Edit";
 import { Delete } from "./Delete";
 
-var test = {};
-
 export function MainWindow(props) {
   const [shoppingList, setShoppingList] = useState([]);
   const [addOpen, setAddOpen] = useState(false);
   const handleAddOpen = () => setAddOpen(true);
-  const [editOpen, setEditOpen] = useState(false);
   const [checked, setChecked] = useState([0]);
 
   useEffect(() => {
@@ -112,11 +109,48 @@ export function MainWindow(props) {
     setShoppingList([...res]);
   };
 
+  function savePurchased(item, itemName) {
+    const payload = {
+      purchased: item.purchased,
+    };
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    };
+    fetch(
+      process.env.REACT_APP_UPDATE_ITEM_URL + "/" + itemName,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((response) => console.log("SUCCESS", JSON.stringify(response)))
+      .catch((error) => console.error("Error:", error));
+  }
+
   const handleToggle = (item) => {
     const res = shoppingList.map((s) =>
-      s.name === item ? { ...s, purchased: !s.purchased } : s
+      s.name === item.name ? { ...s, purchased: !s.purchased } : s
     );
     setShoppingList([...res]);
+
+    const payload = {
+      name: item.name,
+      description: item.description,
+      quantity: item.quantity,
+      purchased: !item.purchased,
+    };
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    };
+    fetch(
+      process.env.REACT_APP_UPDATE_ITEM_URL + "/" + item.name,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((response) => console.log("SUCCESS", JSON.stringify(response)))
+      .catch((error) => console.error("Error:", error));
   };
 
   if (!shoppingList) {
@@ -163,7 +197,7 @@ export function MainWindow(props) {
                     control={
                       <Checkbox
                         checked={item.purchased}
-                        onChange={() => handleToggle(item.name)}
+                        onChange={() => handleToggle(item)}
                         name="purchased"
                         sx={{ marginLeft: "21px", color: "#C6C6C6C6" }}
                       />
