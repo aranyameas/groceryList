@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Backdrop, Box, Button, Modal } from "@mui/material";
 
 export function Delete(props) {

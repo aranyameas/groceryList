@@ -21,13 +21,9 @@ export const Edit = (props) => {
   const shoppingList = props.shoppingList;
   const setShoppingList = props.setShoppingList;
   const [quantity, setQuantity] = useState(item.quantity);
-  const [purchased, setPurchased] = useState(item.purchased);
   const [description, setDescription] = useState({ desc: item.description });
   const [itemName, setItemName] = useState(item.name);
   const editOpen = props.editOpen;
-  const checked = props.checked;
-  const setChecked = props.setChecked;
-  const [value, setValue] = useState(false);
   const charLimit = 100;
 
   const handleEditClose = () => {

@@ -109,24 +109,6 @@ export function MainWindow(props) {
     setShoppingList([...res]);
   };
 
-  function savePurchased(item, itemName) {
-    const payload = {
-      purchased: item.purchased,
-    };
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    };
-    fetch(
-      process.env.REACT_APP_UPDATE_ITEM_URL + "/" + itemName,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((response) => console.log("SUCCESS", JSON.stringify(response)))
-      .catch((error) => console.error("Error:", error));
-  }
-
   const handleToggle = (item) => {
     const res = shoppingList.map((s) =>
       s.name === item.name ? { ...s, purchased: !s.purchased } : s
